@@ -4,7 +4,7 @@ int bandersnatch(char *s1, char *s2);
 char *move(char *s2);
 
 /**
- * wildcmp - compares 2 strings and returns 1 
+ * wildcmp - compares 2 strings and returns 1
  * if the strings is identical, otherwise return 0
  * @s1: first string to compare
  * @s2: second string to  compare
@@ -25,7 +25,7 @@ int wildcmp(char *s1, char *s2)
 	 * and if the next charsof s2 are *, return 1
 	 */
 	if (*s1 == '\0' && *s2 == '*' && !*move(s2))
-		retur n (1);
+		return (1);
 
 	/**
 	 * if the chars are equal in both strings,
@@ -66,7 +66,7 @@ int wildcmp(char *s1, char *s2)
 		if (*s1 == *s2)
 			sum += wildcmp(s1 + 1, s2 + 1);
 		sum += bandersnatch(s1 + 1, s2);
-		return(!!sum);
+		return (!!sum);
 	}
 	return (0);
 }
@@ -106,7 +106,7 @@ char *move(char *s2)
 	/**
 	 * if the current char is a *
 	 * increment s2 by 1
-	 * else return the address of 
+	 * else return the address of
 	 * the first char past all *
 	 */
 
