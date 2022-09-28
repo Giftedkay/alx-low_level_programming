@@ -4,7 +4,7 @@ int check_pal(char *s, int i, int len);
 int _strlen_recursion(char *s);
 
 /**
- * is_palindrome - function that returns 1 if a string is a palindrome and 0 if not
+ * is_palindrome - returns 1 if a string is a palindrome and 0 if not
  *
  * Return: zero
  */
