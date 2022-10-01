@@ -1,117 +1,95 @@
 #include "main.h"
 
-int bandersnatch(char *s1, char *s2);
-char *move(char *s2);
+int strlen_no_wilds(char *str);
+void iterate_wild(char **wildstr);
+char *postfix_match(char *str, char *postfix);
+int wildcmp(char *s1, char *s2);
 
 /**
- * wildcmp - compares 2 strings and returns 1
- * if the strings is identical, otherwise return 0
- * @s1: first string to compare
- * @s2: second string to  compare
+ * strlen_no_wilds - returns the length of a string
+ * ignoring wildcards characters
+ * @str: the string to be measured
  *
- * Return: 1 if the strings can be considered identified
- * otherwise 0
+ * Return: the length
+ */
+
+int strlen_no_wilds(char *str)
+{
+	int len = 0, index = 0;
+
+	if (*(str + index))
+	{
+		if (*str != '*')
+		       len++;
+	index++;
+	len += strlen_no_wilds(str + index);
+	}
+	return (len);
+}
+
+/**
+ * iterate_wild - iterate through a string located at a wildcard
+ * until it points to a non wildcard character
+ * @wildstr: the string to be iterated through
+ */
+
+void iterate_wild(char **wildstr)
+{
+	if (**wildstr == '*')
+	{
+		(*wildstr)++;
+		iterate_wild(wildstr);
+	}
+}
+
+/**
+ * postfix_match - checks if a string str matches the postfix of 
+ * another string potentially containing wildcards
+ * @str: the string to be matched
+ * @postfix: the postfix
+ *
+ * Return: if str and postfix are identical - a pointer to the null byte
+ * located at the end of postfix
+ * otherwise- a pointer to the first unmatched character in postfix
+ */
+
+char *postfix_match(char *str, char *postfix)
+{
+	int str_len = strlen_no_wilds(str) - 1;
+	int postfix_len =  strlen_no_wilds(postfix) - 1;
+
+	if (*postfix == '*')
+		iterate_wild(&postfix);
+	if (*(str + str_len - postfix) == *postfix && *postfix != '\0')
+	{
+		postfix++;
+		return (postfix_match(str,postfix));
+	}
+	return (postfix);
+}
+
+/**
+ * wildcmp - compare two strings, considering wildcard character
+ * @
+ * s1: the first tb be compare
+ * s2: the second string to be compared
+ *
+ * Return: if the string can be considerd idendtical  -1
+ * otherwise -0
  */
 
 int wildcmp(char *s1, char *s2)
 {
-	/**
-	 * this is going to be a sum of return values
-	 */
-	int sum = 0;
-
-	/**
-	 * if we reach the end of s1 and the char in s2 is a *
-	 * and if the next charsof s2 are *, return 1
-	 */
-	if (*s1 == '\0' && *s2 == '*' && !*move(s2))
-		return (1);
-
-	/**
-	 * if the chars are equal in both strings,
-	 * if we reached the end of s1, return 1
-	 * else increment s1 and s2 by 1
-	 */
-
-	if (*s1 == *s2)
-	{
-		if (*s1 == '\0')
-			return (1);
-		return (wildcmp(s1 + 1, s2 + 1));
-	}
-
-	/**
-	 * if we reached the end of both strings
-	 * Return: 0
-	 */
-
-	if (*s1 == '\0' || *s2 == '\0')
-		return (0);
-
-	/**
-	 * if the char in s2 is a *
-	 * finds the address of the first char after the *
-	 * if we reached the end of s2, return 1
-	 * if the chars are equal, add the return values
-	 * of wildcmp() to sum
-	 * add the return value of bandersnatch() to sum
-	 * convert non-zero to 1, keeps 0 at 0, return
-	 */
-
 	if (*s2 == '*')
 	{
-		s2 = move(s2);
-		if (*s2 == '\0')
-			return (1);
-		if (*s1 == *s2)
-			sum += wildcmp(s1 + 1, s2 + 1);
-		sum += bandersnatch(s1 + 1, s2);
-		return (!!sum);
-	}
+	iterate_wild(&s2);
+	s2 = postfix_match(s1, s2);
+}
+if (*s2 == '\0')
+return (1);
+if (*s1 != *s2)
 	return (0);
+	return (wildcmp (++s1, ++s2));
 }
 
-/**
- * bandersnatch - check recursively for all the paths when the
- * characters are equal
- * @s1: first string
- * @s2: second string
- *
- * Return: return value of wildcmp() or of itself
- */
-
-int bandersnatch(char *s1, char *s2)
-{
-	/**
-	 * if we reached the end of s1, return 0
-	 * if chars are equal, return the return value of wildcmp()
-	 * increment s1 by 1, not s2
-	 */
-
-	if (*s1 == '\0')
-		return (0);
-	if (*s1 == *s2)
-		return (wildcmp(s1, s2));
-	return (bandersnatch(s1 + 1, s2));
-}
-/**
- * *move - moves the current char past the *
- * @s2: string to iterate over
- *
- * Return: the address of the character after the *
- */
-
-char *move(char *s2)
-{
-	/**
-	 * if the current char is a *
-	 * increment s2 by 1
-	 * else return the address of
-	 * the first char past all *
-	 */
-
-	if (*s2 == '*')
-		return (move(s2 + 1));
-	else
-		return (s2);
-}
+	
