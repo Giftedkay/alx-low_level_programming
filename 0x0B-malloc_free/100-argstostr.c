@@ -7,7 +7,7 @@
  * @av: pointer to the array of size ac
  *
  * Return: NULL if ac == 0 or av ==null
- * pointer to the new string 
+ * pointer to the new string
  * NULL on fail
  */
 
@@ -30,7 +30,7 @@ char *argstostr(int ac, char **av)
 			j++;
 		}
 		size++;
-		i++:
+		i++;
 	}
 	arg = malloc((sizeof(char) * size) + 1);
 	if (arg == NULL)
