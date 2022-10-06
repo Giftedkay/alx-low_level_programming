@@ -8,7 +8,7 @@
  *
  * Return: If min > max, return NULL
  * If malloc fails, return NULL
- * otherwise a pointer to the newly created memory
+ * Otherwise - the pointer to the newly created array
  */
 
 int *array_range(int min, int max)
@@ -20,7 +20,7 @@ int *array_range(int min, int max)
 	size = max - min + 1;
 	array = malloc(sizeof(int) * size);
 	if (array == NULL)
-	       return (NULL);
+		return (NULL);
 	for (index = 0; index < size; index++)
 		array[index] = min++;
 	return (array);
