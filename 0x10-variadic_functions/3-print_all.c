@@ -11,43 +11,42 @@
 
 void print_all(const char * const format, ...)
 {
-	va_list valist;
-	unsigned int i = 0, j, c = 0;
-	char *str;
+	va_list arg;
+	unsigned int i;
+	char *s; *separator;
 	const char t_arg[] = "cifs";
 
-	va_start(valist, format);
+	va_start(arg, format);
+
+	separator = "";
+
+	i =0;
 	while (format && format[i])
 	{
-		j = 0;
-		while (t_arg[j])
-		{
-			if (format[i] == t_arg[j] && c)
-			{
-				printf(", ");
-				break;
-			} j++;
-		}
 		switch (format[i])
 		{
 			case 'c':
-				printf("%c", va_arg(valist, int)), c = 1;
+				printf("%s%c", separator, va_arg(arg, int));
 				break;
 			case 'i':
-				printf("%d", va_arg(valist, int)), c = 1;
+				printf("%s%d", separator, va_arg(args, int));
 				break;
 			case 'f':
-				printf("%f", va_arg(valist, double)), c = 1;
-			case 's':
-				str = va_arg(valist, char *), c = 1;
-				if (!str)
-				{
-					printf("(nil)");
-					break;
-				}
-				printf("%s", str);
+				printf("%s%f", separator, va_arg(arg, double));
 				break;
-		} i++;
+			case 's':
+				str = va_arg(arg, char *);
+				if (s == NULL)
+					s = "(nil)";
+				printf("%s%s", separator, s);
+				break;
+			default:
+				i++;
+				continue;
+		}
+		separator = ", ";
+		i++;
 	}
-	printf("\n"), va_end(valist);
+	printf("\n");
+       	va_end(valist);
 }
