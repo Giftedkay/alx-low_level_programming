@@ -10,9 +10,9 @@
 
 void print_all(const char * const format, ...)
 {
-	va_list args;
 	unsigned int i;
-	char *s; *separator;
+	va_list args;
+	char *s, *separator;
 
 	va_start(args, format);
 
